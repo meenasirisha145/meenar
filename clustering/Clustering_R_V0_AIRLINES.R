@@ -10,7 +10,7 @@ rm(list = ls())
 ##############################################################################################
 
 #---------------------Step1: Loading the Data in R
-Path<-setwd("C:/Ganesha_Accenture/Ganesha_IVY/R/20180112-20180114 Ivy Data Science Hackshop/03 CLUSTERING/CASE STUDY1/02DATA")
+
 airlines<-read.csv("AirlinesCluster.csv", header = TRUE, as.is = TRUE, na.strings = c(""))
 
 
@@ -24,13 +24,14 @@ as.data.frame(colSums(is.na(airlines)))
 
 
 
-#Normalizing the Data for clustering 
+#Normalizing the Data for clustering
+library(caret)
 preproc<-preProcess(airlines)
 airlinesNorm<-predict(preproc,airlines)
 summary(airlinesNorm)
 
 
-#Hiearchical Clustering
+#Hierarchical Clustering
 distan<-dist(airlinesNorm, method = "euclidean")
 ClusterAirline<-hclust(distan, method = "ward.D")
 plot(ClusterAirline)
@@ -47,7 +48,7 @@ MeanComp<-function(var, clustergrp, meas){
 }
 
 Bal_mean<-MeanComp(airlines$Balance, AirlineCluster, mean)
-
+Bal_DaysSinceEnroll<-MeanComp(airlines$DaysSinceEnroll, AirlineCluster, mean)
 
 #k-Means Clustersing
 set.seed(88)
