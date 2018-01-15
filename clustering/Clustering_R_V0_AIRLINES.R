@@ -41,6 +41,9 @@ plot(ClusterAirline)
 AirlineCluster<-cutree(ClusterAirline, k = 5)
 table(AirlineCluster)
 
+airlines_h=data.frame(airlines,AirlineCluster)
+airlines_h
+write.csv(airlines_h,"airlines_h.csv",row.names = FALSE)
 #Computing the average values of the cluster groups
 MeanComp<-function(var, clustergrp, meas){
   z<-tapply(var, clustergrp, meas)
@@ -56,3 +59,12 @@ k<-5
 AirlineCluster_K<-kmeans(airlinesNorm, centers = k, iter.max = 1000)
 table(AirlineCluster_K$cluster)
 AirlineCluster_K$centers
+
+
+#finding the mean values of the variables
+bal_mean_k=aggregate(airlines,by=list(AirlineCluster_K$cluster),mean)
+bal_mean_k
+
+
+airlines_k=data.frame(airlines,AirlineCluster_K$cluster)
+write.csv(airlines_k,"airlines_k.csv",row.names = FALSE)
