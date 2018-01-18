@@ -72,7 +72,7 @@ StockClus_K<-kmeans(StockClusNorm, centers = k, iter.max = 1000)
 table(StockClus_K$cluster)
 StockClus_K$centers
 StockClus_K$cluster
-StockClus_K
+
 stocks_k=data.frame(StockClus,StockClus_K$cluster)
 write.csv(stocks_k,"stocks.csv",row.names = FALSE)
 
