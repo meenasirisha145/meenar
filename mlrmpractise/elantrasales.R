@@ -36,6 +36,26 @@ summary(model3)
 
 model4=lm(ElantraSales~Month+Unemployment+CPI_all+ CPI_energy ,data=traindata)
 summary(model4)
+
+res=model4$residuals
+library(nortest)
+ad.test(res)
+shapiro.test(res)
+plot(model4)
+library(car)
+ncvTest(model4)
+durbinWatsonTest(model4)
+
+as.data.frame(vif(model4))
+
+model5=lm(ElantraSales~Month+Unemployment+ CPI_energy ,data=traindata)
+summary(model5)
+as.data.frame(vif(model5))
+#using stargazer library
+library(stargazer)
+stargazer(model4,type="text",out="model4.txt")
+stargazer(model1,model2,model3,model4,type="text",out = "elantramodels.txt")
+
 #prediction
 testdata$Month=as.factor(testdata$Month)
 pred_sales=predict(model4,newdata=testdata)
