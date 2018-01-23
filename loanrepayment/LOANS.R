@@ -54,13 +54,13 @@ Model1<-glm(not.fully.paid~.,family = binomial(link = 'logit'), data = loans_tra
 summary(Model1)
 
 
-#- 2nd Iteration 
+#- 2nd Iteration -removing int.rate and dti
 Model2<-glm(not.fully.paid~ credit.policy + purpose + installment + log.annual.inc + fico
             + revol.bal + revol.util + inq.last.6mths + delinq.2yrs + pub.rec,
             family = binomial(link = 'logit'), data = loans_train)
 summary(Model2)
 
-
+loans$purpose
 #- 3rd Iteration 
 Model3<-glm(not.fully.paid~ credit.policy + I(purpose == "debt_consolidation") +
               I(purpose == "credit_card") + I(purpose == "all_other") + 

@@ -1,8 +1,14 @@
 data=read.csv("elantra.csv",stringsAsFactors = FALSE,header = TRUE)
 data
+
+#Structure and summary of data
 str(data)
 summary(data)
+
+#Checking for NA values
 colSums(is.na(data))
+
+#Partitioning the data into train and validation
 traindata=subset(data,Year<=2012)
 traindata
 testdata=subset(data,Year>2012)
@@ -21,7 +27,7 @@ summary(model1)
 model2=lm(ElantraSales~Month+Unemployment+CPI_all+ CPI_energy + Queries,data=traindata)
 summary(model2)
 
-
+#Converting month as Factor
 data$Month=as.factor(data$Month)
 str(data)
 
@@ -37,20 +43,29 @@ summary(model3)
 model4=lm(ElantraSales~Month+Unemployment+CPI_all+ CPI_energy ,data=traindata)
 summary(model4)
 
+#Normality Test----
 res=model4$residuals
 library(nortest)
+#Anderson-Darling Test
 ad.test(res)
-shapiro.test(res)
 plot(model4)
+
+#Homoscedasticity Test
 library(car)
+#non-constant Variance Test
 ncvTest(model4)
+
+#Autocorrelation Test
 durbinWatsonTest(model4)
 
+#Multicollinearity Test
 as.data.frame(vif(model4))
+stripchart(Month~ElantraSales,data=traindata)
 
-model5=lm(ElantraSales~Month+Unemployment+ CPI_energy ,data=traindata)
-summary(model5)
-as.data.frame(vif(model5))
+library(ggplot2)
+qplot(traindata$Month,traindata$ElantraSales,xlab = "Month",ylab = "ElantraSales")
+
+
 #using stargazer library
 library(stargazer)
 stargazer(model4,type="text",out="model4.txt")
@@ -61,6 +76,17 @@ testdata$Month=as.factor(testdata$Month)
 pred_sales=predict(model4,newdata=testdata)
 testdata$pred=pred_sales
 testdata
+
+#Mean Absolute Percentage Error
+fv=model4$fitted.values#fitted values
+fv
+av=traindata$ElantraSales#actual values
+av
+avt=testdata$ElantraSales
+
+library(MLmetrics)
+MAPE(fv,av)
+MAPE(fv,avt)
 
 SSE=sum((testdata$ElantraSales-testdata$pred)^2)
 SSE
