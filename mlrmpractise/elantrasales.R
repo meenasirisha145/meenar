@@ -27,6 +27,7 @@ summary(model1)
 model2=lm(ElantraSales~Month+Unemployment+CPI_all+ CPI_energy + Queries,data=traindata)
 summary(model2)
 
+
 #Converting month as Factor
 data$Month=as.factor(data$Month)
 str(data)
@@ -86,10 +87,16 @@ avt=testdata$ElantraSales
 
 library(MLmetrics)
 MAPE(fv,av)
-MAPE(fv,avt)
+MAPE(pred_sales,avt)
 
-SSE=sum((testdata$ElantraSales-testdata$pred)^2)
+library(Metrics)
+rmse(pred_sales,avt)
+
+SSE=mean((testdata$ElantraSales-testdata$pred)^2)
 SSE
+
+rmse=sqrt(SSE)
+
 
 summary(abs(pred_sales-testdata$ElantraSales))
 
