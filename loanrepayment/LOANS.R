@@ -79,6 +79,8 @@ Model4<-glm(not.fully.paid~ credit.policy + I(purpose == "debt_consolidation") +
             + revol.bal + revol.util + inq.last.6mths  + pub.rec,
             family = binomial(link = 'logit'), data = loans_train)
 summary(Model4)
+x=Model4$coefficients
+exp(x)
 
 ####################################################################################
 #################     Diagonstic Checking       #################################### 
