@@ -14,6 +14,9 @@ table(data$Outlet_Size)
 
 data$Item_Weight[is.na(data$Item_Weight)]=mean(data$Item_Weight,na.rm=TRUE)
 data$Outlet_Size[is.na(data$Outlet_Size)]="Medium"
+data$Outlet_Establishment_Year=as.factor(data$Outlet_Establishment_Year)
+
+str(data)
 ###Building the model##
 data1=data[,-c(1,7)]
 
@@ -28,6 +31,7 @@ summary(model1)
 
 model2=lm(Item_Outlet_Sales~. ,data=train)
 summary(model2)
+
 
 
 model3=lm(Item_Outlet_Sales~Item_Weight+Item_Fat_Content+Item_Visibility+Item_MRP+
@@ -46,21 +50,31 @@ model6=lm(Item_Outlet_Sales~Item_MRP+Outlet_Establishment_Year+
             Outlet_Size+Outlet_Location_Type+Outlet_Type,data=train)
 summary(model6)
 
-pred=predict(model6,newdata = valid)
-valid$prediction=pred
-library(Metrics)
-rmse(valid$Item_Outlet_Sales,pred)
+model7=lm(Item_Outlet_Sales~Item_MRP+Outlet_Establishment_Year+
+            Outlet_Size,data=train)
+summary(model7)
+
+model8=lm(Item_Outlet_Sales~Item_MRP+Outlet_Size,data=train)
+summary(model8)
+
+
+model9=lm(Item_Outlet_Sales~Item_MRP+Outlet_Establishment_Year,data=train)
+summary(model9)
 
 testdata=read.csv("bigmarttest.csv",na.strings = "")
 colSums(is.na(testdata))
 table(testdata$Outlet_Size)
 testdata$Outlet_Size[is.na(testdata$Outlet_Size)]="Medium"
+testdata$Outlet_Establishment_Year=as.factor(testdata$Outlet_Establishment_Year)
+str(testdata)
 
-pred=predict(model6,newdata = testdata[,c("Item_MRP","Outlet_Establishment_Year",
-                                          "Outlet_Size","Outlet_Location_Type",
-                                          "Outlet_Type")])
+pred=predict(model8,newdata = testdata[,c("Item_MRP","Outlet_Size")])
 pred
 sub1=read.csv("sub.csv")
 sub1$Item_Outlet_Sales=pred
 head(sub1)
 write.csv(sub1,"submission.csv",row.names = FALSE)
+
+
+
+
