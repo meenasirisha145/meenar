@@ -60,6 +60,7 @@ Model2<-glm(not.fully.paid~ credit.policy + purpose + installment + log.annual.i
             family = binomial(link = 'logit'), data = loans_train)
 summary(Model2)
 
+
 loans$purpose
 #- 3rd Iteration 
 Model3<-glm(not.fully.paid~ credit.policy + I(purpose == "debt_consolidation") +
@@ -81,6 +82,8 @@ Model4<-glm(not.fully.paid~ credit.policy + I(purpose == "debt_consolidation") +
 summary(Model4)
 x=Model4$coefficients
 exp(x)
+
+
 
 ####################################################################################
 #################     Diagonstic Checking       #################################### 
