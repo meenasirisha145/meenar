@@ -143,7 +143,7 @@ plotCorr <- function(data_in, i){
 
 highcorr <- c(names(correlations[,'SalePrice'])[which(correlations[,'SalePrice'] > 0.5)], names(correlations[,'SalePrice'])[which(correlations[,'SalePrice'] < -0.2)])
 
-data_corr <- train[,highcorr, with = FALSE]
+data_corr <- train[,highcorr]
 
 doPlots(data_corr, fun = plotCorr, ii = 1:6)
 
@@ -174,7 +174,10 @@ model1=lm(SalePrice~OverallQual+GrLivArea+YearBuilt+GarageCars,data=train)
 summary(model1)
 
 plot(model1)
-
+test
+str(test)
+test$OverallQual=as.factor(test$OverallQual)
+test$YearBuilt=as.factor(test$YearBuilt)
 pred=predict(model1,test)
 pred
 sub=read.csv("sample_submission.csv",header=T)

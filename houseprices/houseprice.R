@@ -104,3 +104,20 @@ traindrop$Electrical[is.na(traindrop$Electrical)]="FuseF"
 as.data.frame(colSums(is.na(traindrop)))
 
 
+model=lm(SalePrice~OverallQual+GrLivArea+YearBuilt+TotalBsmtSF+GarageCars,data=traindrop)
+summary(model)
+
+
+
+model1=lm(SalePrice~OverallQual+GrLivArea+YearBuilt+GarageCars,data=train)
+summary(model1)
+
+plot(model1)
+
+pred=predict(model1,test)
+pred
+sub=read.csv("sample_submission.csv",header=T)
+head(sub)
+nrow(sub)
+sub$SalePrice=pred
+head(sub)
