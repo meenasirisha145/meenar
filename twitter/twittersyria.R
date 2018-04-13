@@ -40,6 +40,7 @@ score.sentiment = function(tweets, pos.words, neg.words)
     
     tweet = tolower(tweet) # makes all letters lowercase
     
+    
     word.list = str_split(tweet, '\\s+') # splits the tweets by word in a list
     
     words = unlist(word.list) # turns the list into vector
@@ -54,7 +55,7 @@ score.sentiment = function(tweets, pos.words, neg.words)
     score = sum(pos.matches) - sum(neg.matches) # true and false are 
     #treated as 1 and 0 so they can be added
     
-    return(score)
+    return(score) 
     
   }, pos.words, neg.words )
   
