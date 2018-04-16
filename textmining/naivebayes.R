@@ -60,6 +60,4 @@ dtm.train.nbmat=as.matrix(dtm.train.nb)
 classifier <- naiveBayes(dtm.train.nbmat,as.factor(data[1:300,3]))
 pred=predict(classifier,newdata=df.test)
 table(df.test[,3],pred)
-inspect(dtm.train.nb)
-length(trainNB)
-length(df.train$class)
+
