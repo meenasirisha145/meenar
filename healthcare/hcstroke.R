@@ -17,13 +17,13 @@ sum(is.na(full$bmi))
 
 library(ggplot2)
 
-x1=ggplot(data=full, aes( x=gender, fill=smoking_status)) + geom_bar(position = 'stack') + 
+ggplot(data=full, aes( x=gender, fill=smoking_status)) + geom_bar(position = 'stack') + 
   labs(title='position=stack')
-x2=ggplot(data=full, aes( x=Residence_type, fill=smoking_status)) + geom_bar(position = 'stack') + 
+ggplot(data=full, aes( x=Residence_type, fill=smoking_status)) + geom_bar(position = 'stack') + 
   labs(title='position=stack')
-x3=ggplot(data=full, aes( x=work_type, fill=smoking_status)) + geom_bar(position = 'stack') + 
+ggplot(data=full, aes( x=work_type, fill=smoking_status)) + geom_bar(position = 'stack') + 
   labs(title='position=stack')
-x4=ggplot(data=full, aes( x=ever_married, fill=smoking_status)) + geom_bar(position = 'stack') + 
+ggplot(data=full, aes( x=ever_married, fill=smoking_status)) + geom_bar(position = 'stack') + 
   labs(title='position=stack')
 
 table(full$smoking_status)
@@ -47,16 +47,29 @@ table(train1$stroke)
 test1=subset(test1,select = -c(12))
 str(test1)
 
+library(caTools)
+spl=sample.split(train1,SplitRatio = 0.7)
+train2=subset(train1,spl==TRUE)
+valid=subset(train1,spl==FALSE)
+str(train2)
+str(valid)
+
 #Building a model
-library(randomForest)
+
+
+
 library(rpart)
-myformula=stroke~gender+hypertension+heart_disease+ever_married+work_type+Residence_type+avg_glucose_level+bmi+smoking_status
-model1=rpart(myformula,data=train1)
+myformula=stroke~gender+age+hypertension+heart_disease+ever_married+work_type+Residence_type+avg_glucose_level+bmi+smoking_status
+model1=rpart(myformula,data=train2)
 summary(model1)
 
+pred=predict(model1,newdata = valid)
+valid$predictions=pred
+table(valid$stroke,valid$predictions)
 
-pred=predict(model1,newdata = train1)
-train1$predictions=pred
+
+
+
 library(ROCR)
 
 pred <- prediction(train1$predictions, train1$stroke)
